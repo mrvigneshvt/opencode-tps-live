@@ -82,6 +82,18 @@ TPS_LIVE_DEBUG=1 opencode
 Verified against OpenCode v2.0.x. Event names follow the V2 session stream
 (`session.step.*`, `session.{text,reasoning,tool.input}.delta`).
 
+## Security
+
+This package ships **zero runtime dependencies**; its manifest declares only
+peer dependencies (`@opentui/*`, `solid-js`), which the OpenCode host resolves
+from its own bundled copies. Scanners that resolve peers (Socket, `npm audit`)
+may show moderate advisories inherited from the OpenCode plugin toolchain —
+`@opentui/solid` → `babel-plugin-module-resolver` → `glob` / `minimatch`
+(GHSA-3g3m-2fjr-6pw4, GHSA-g3hv-75wg-m249). Those libraries run only during
+the plugin's one-time TSX compilation inside OpenCode's plugin cache and never
+see plugin input; the fix belongs upstream. The package itself has no known
+advisories (OSV).
+
 ## License
 
 [MIT](LICENSE)
